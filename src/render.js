@@ -1,4 +1,5 @@
-import { COLORS, sceneAt, totalDuration } from "./model.js";
+import { getTheme } from "./themes.js";
+import { sceneAt, totalDuration } from "./model.js";
 import { routeEdges, pointOnRoute } from "./routing.js";
 export const WIDTH = 1280,
   HEIGHT = 720;
@@ -177,17 +178,18 @@ export function renderFrame(canvas, project, graph, time) {
   ctx.lineJoin = "round";
   const state = frameState(project, graph, time),
     s = state.scene,
-    accent = COLORS[s.color] || COLORS.violet,
+    palette = getTheme(project.theme),
+    accent = palette.accents[s.color] || palette.accents.violet,
     effect = s.effect || "flow",
     intensity = s.intensity ?? 0.7,
     speed = s.speed ?? 1,
     elapsed = Math.max(0, time - state.start),
     entry = ease(Math.min(1, (elapsed * speed) / 0.85)),
     routes = routesFor(graph);
-  ctx.fillStyle = "#fbfcf9";
+  ctx.fillStyle = palette.background;
   ctx.fillRect(0, 0, WIDTH, HEIGHT);
   ctx.font = "500 13px system-ui,sans-serif";
-  ctx.fillStyle = "#7a856f";
+  ctx.fillStyle = palette.muted;
   ctx.fillText("DiagramTake", 54, 45);
   ctx.textAlign = "right";
   ctx.fillText(
@@ -197,7 +199,7 @@ export function renderFrame(canvas, project, graph, time) {
   );
   ctx.textAlign = "left";
   ctx.font = "600 30px system-ui,sans-serif";
-  ctx.fillStyle = "#354033";
+  ctx.fillStyle = palette.title;
   ctx.fillText(project.title, 54, 94, 1172);
   const c = state.camera;
   ctx.save();
@@ -211,11 +213,11 @@ export function renderFrame(canvas, project, graph, time) {
     const route = routes.get(edge.id);
     if (!route) continue;
     const active = s.edges.includes(edge.id),
-      color = active ? accent : "#99a78d",
+      color = active ? accent : palette.arrow,
       reveal =
         active && effect === "draw" ? Math.min(1, (elapsed * speed) / 1.6) : 1;
     ctx.globalAlpha = active && effect === "fade" ? 0.2 + 0.8 * entry : 1;
-    ctx.strokeStyle = active ? accent : "#a2af97";
+    ctx.strokeStyle = active ? accent : palette.edge;
     ctx.lineWidth = active ? 2.1 + intensity * 0.7 : 1.5;
     drawRoute(ctx, route, reveal);
     arrow(ctx, route, color, reveal);
@@ -252,11 +254,11 @@ export function renderFrame(canvas, project, graph, time) {
         Math.max(...label.map((l) => ctx.measureText(l).width)) + 14,
       ),
       h = label.length * 17 + 7;
-    ctx.fillStyle = "#fbfcf9";
+    ctx.fillStyle = palette.background;
     box(ctx, p.x - w / 2, p.y - h / 2, w, h, 5);
     ctx.fill();
     ctx.textAlign = "center";
-    ctx.fillStyle = active ? accent : "#718062";
+    ctx.fillStyle = active ? accent : palette.edgeLabel;
     label.forEach((line, i) =>
       ctx.fillText(line, p.x, p.y + (i - (label.length - 1) / 2) * 17),
     );
@@ -280,8 +282,8 @@ export function renderFrame(canvas, project, graph, time) {
     }
     const x = node.x - node.w / 2,
       y = node.y - node.h / 2;
-    ctx.fillStyle = active ? accent + "0d" : "#ffffff";
-    ctx.strokeStyle = active ? accent : "#d9dfd2";
+    ctx.fillStyle = active ? accent + palette.tint : palette.node;
+    ctx.strokeStyle = active ? accent : palette.nodeBorder;
     ctx.lineWidth = active ? 1.5 : 1;
     box(ctx, x, y, node.w, node.h, 13);
     ctx.fill();
@@ -297,7 +299,7 @@ export function renderFrame(canvas, project, graph, time) {
       ctx.globalAlpha = 1;
     }
     ctx.textAlign = "center";
-    ctx.fillStyle = active ? "#3e483b" : "#7b8772";
+    ctx.fillStyle = active ? palette.activeText : palette.nodeText;
     ctx.font = "500 17px system-ui,sans-serif";
     const lines = wrap(ctx, node.label, node.w - 24, 2);
     lines.forEach((line, i) =>
@@ -306,7 +308,7 @@ export function renderFrame(canvas, project, graph, time) {
     ctx.restore();
   }
   ctx.restore();
-  ctx.strokeStyle = "#e2e7db";
+  ctx.strokeStyle = palette.divider;
   ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.moveTo(54, 532);
@@ -319,11 +321,11 @@ export function renderFrame(canvas, project, graph, time) {
   ctx.textAlign = "left";
   ctx.font = "500 14px system-ui,sans-serif";
   ctx.fillText(s.title, 74, 562, 1120);
-  ctx.fillStyle = "#475340";
+  ctx.fillStyle = palette.text;
   ctx.font = "400 25px system-ui,sans-serif";
   const lines = wrap(ctx, s.narration, 1165, 3);
   lines.forEach((line, i) => ctx.fillText(line, 54, 601 + i * 31));
-  ctx.fillStyle = "#e6eadf";
+  ctx.fillStyle = palette.track;
   ctx.fillRect(54, 695, 1172, 2);
   ctx.fillStyle = accent;
   ctx.fillRect(54, 695, 1172 * Math.min(1, time / totalDuration(project)), 2);

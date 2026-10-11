@@ -1,5 +1,5 @@
+import { getTheme, normalizeTheme } from "./themes.js";
 import {
-  COLORS,
   demoProject,
   parseDiagram,
   layoutDiagram,
@@ -195,7 +195,10 @@ function renderCards() {
       "scene-card" + (i === selected ? " active" : ""),
       "",
     );
-    card.style.setProperty("--card-color", COLORS[s.color]);
+    card.style.setProperty(
+      "--card-color",
+      getTheme(project.theme).accents[s.color],
+    );
     card.setAttribute("aria-pressed", i === selected);
     const top = text("div", "card-top", "");
     top.append(
@@ -251,7 +254,7 @@ function renderInspector() {
     Math.round((s.intensity ?? 0.7) * 100) + "%";
   $("#speed-value").textContent = (s.speed ?? 1) + "×";
   $("#colors").replaceChildren();
-  Object.entries(COLORS).forEach(([key, color]) => {
+  Object.entries(getTheme(project.theme).accents).forEach(([key, color]) => {
     const b = text("button", "swatch" + (s.color === key ? " active" : ""), "");
     b.style.background = color;
     b.setAttribute("aria-label", `${key} accent`);
@@ -288,12 +291,23 @@ function renderInspector() {
   $("#duplicate").disabled = project.scenes.length >= 100;
 }
 function renderUI() {
+  document.documentElement.dataset.theme = normalizeTheme(project.theme);
+  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", getTheme(project.theme).background);
+  $("#theme-select").value = normalizeTheme(project.theme);
   updateHistory();
   $("#project-title").value = project.title;
   renderCards();
   renderInspector();
   draw();
 }
+$("#theme-select").onchange = (e) => {
+  if (exportController) return;
+  pause();
+  checkpoint(true);
+  project.theme = normalizeTheme(e.target.value);
+  save();
+  renderUI();
+};
 $("#project-title").addEventListener("input", (e) => {
   checkpoint();
   project.title = e.target.value;
@@ -532,7 +546,9 @@ $("#reset-demo").onclick = () => {
     return;
   pause();
   checkpoint(true);
+  const selectedTheme = normalizeTheme(project.theme);
   project = demoProject();
+  project.theme = selectedTheme;
   graph = layoutDiagram(parseDiagram(project.source));
   selected = 0;
   time = 0;

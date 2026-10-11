@@ -1,3 +1,4 @@
+import { normalizeTheme } from "./themes.js";
 export const COLORS = {
   lime: "#3e8f69",
   violet: "#7665b5",
@@ -123,6 +124,7 @@ export function makeScene(part = {}) {
 export function demoProject() {
   return {
     version: 1,
+    theme: "light",
     title: "결제는 어떻게 회복할까?",
     source: sampleSource,
     scenes: [
@@ -232,7 +234,7 @@ export function validateProject(input) {
       duration: s.duration,
       nodes: [...new Set(s.nodes)],
       edges: [...new Set(s.edges)],
-      color: COLORS[s.color] ? s.color : "lime",
+      color: Object.hasOwn(COLORS, s.color) ? s.color : "lime",
       camera: s.camera === "focus" ? "focus" : "wide",
       effect: ["flow", "draw", "pulse", "fade", "focus"].includes(s.effect)
         ? s.effect
@@ -245,5 +247,11 @@ export function validateProject(input) {
         : 1,
     });
   });
-  return { version: 1, title: input.title, source: input.source, scenes };
+  return {
+    version: 1,
+    theme: normalizeTheme(input.theme),
+    title: input.title,
+    source: input.source,
+    scenes,
+  };
 }
