@@ -34,7 +34,7 @@ Open **http://localhost:5173**. Requires Node.js 20+; no dependency install or b
 1. **Play the example.** Follow a payment from request to failure to recovery.
 2. **Pick a sentence card.** Rewrite the caption in the right panel.
 3. **Point at the important part.** Click diagram nodes and select animated connections.
-4. **Direct the shot.** Choose an accent, a duration, and Wide shot or Follow focus.
+4. **Direct the shot.** Choose a motion style, speed, intensity, duration, and camera shot.
 5. **Export.** Save a 720p WebM video or the current frame as a PNG.
 
 Add an audio file if you already have a voice-over. It plays from the start of the story and is included in the video; scene lengths remain under your control.
@@ -42,7 +42,9 @@ Add an audio file if you already have a voice-over. It plays from the start of t
 ## Small editor, complete loop
 
 - **Sentence-first direction:** editable cards, duplication, reorder, deletion, undo/redo.
-- **Moving explanations:** glowing packet motion, per-scene highlights, smooth focus-camera transitions.
+- **Moving explanations:** clean routed connections, per-scene highlights, smooth focus-camera transitions.
+- **Five motion styles:** draw-on paths, flowing dots, soft pulses, fade-and-slide entrances, or camera focus. Tune speed and intensity per scene.
+- **Clean connectors:** distinct ports, separate return lanes, and node-aware orthogonal routes keep branching explanations readable.
 - **A real timeline:** play, pause, scrub, jump between scenes, edit durations.
 - **Your voice, locally:** browser-decoded audio, synchronized preview and video export.
 - **Files you own:** automatic browser saving, portable project JSON, PNG, WebM.

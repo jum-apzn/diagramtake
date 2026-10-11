@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#14171b" />
+    <meta name="theme-color" content="#f5f5f2" />
     <meta
       name="description"
       content="Turn a diagram into a visual story. Pick a sentence, highlight a path, export a video. Local-first and open source."
@@ -15,7 +15,7 @@
     <header class="topbar">
       <a class="brand" href="./" aria-label="DiagramTake home"
         ><span class="brand-mark">d<span>↗</span></span
-        ><span>DiagramTake<small>STORY STUDIO</small></span></a
+        ><span>DiagramTake<small>DIAGRAMS IN MOTION</small></span></a
       >
       <div class="project-heading">
         <input
@@ -48,8 +48,8 @@
       <aside class="story-panel">
         <div class="panel-heading">
           <div>
-            <span class="eyebrow">01 / THE SCRIPT</span>
-            <h1>장면으로 이야기하기</h1>
+            <span class="eyebrow">YOUR STORY</span>
+            <h1>이야기의 순서</h1>
           </div>
           <span class="count" id="scene-count">05</span>
         </div>
@@ -65,7 +65,7 @@
       <section class="center-panel">
         <div class="stage-toolbar">
           <div>
-            <span class="live-dot"></span> LIVE PREVIEW
+            <span class="live-dot"></span> Preview
             <span class="muted">/ 1280 × 720</span>
           </div>
           <button id="diagram-open" class="quiet">〈 〉 Edit diagram</button>
@@ -80,7 +80,7 @@
             ></canvas>
           </div>
           <div class="stage-hint">
-            <span>✦ Click a node to make it part of this scene</span
+            <span>Click a node to highlight it in this scene</span
             ><button id="reset-demo" class="text-button">Load example ↗</button>
           </div>
         </div>
@@ -127,10 +127,10 @@
       <aside class="inspector">
         <div class="panel-heading">
           <div>
-            <span class="eyebrow">02 / THE DIRECTION</span>
+            <span class="eyebrow">SCENE DETAILS</span>
             <h2>장면 설정</h2>
           </div>
-          <span class="spark">✳</span>
+          <span class="detail-dot"></span>
         </div>
         <label class="field-label" for="scene-title">Scene title</label
         ><input id="scene-title" maxlength="160" /><label
@@ -162,6 +162,42 @@
             </select>
           </div>
         </div>
+        <label class="field-label" for="effect">Motion style</label>
+        <select id="effect">
+          <option value="flow">Flow · 흐르는 점</option>
+          <option value="draw">Draw on · 선 그리기</option>
+          <option value="pulse">Pulse · 부드러운 강조</option>
+          <option value="fade">Fade & slide · 등장</option>
+          <option value="focus">Camera focus · 시선 이동</option>
+        </select>
+        <div class="effect-controls">
+          <div>
+            <label for="intensity"
+              >Intensity <output id="intensity-value">70%</output></label
+            ><input
+              id="intensity"
+              type="range"
+              min="0.2"
+              max="1.5"
+              step="0.1"
+              value="0.7"
+            />
+          </div>
+          <div>
+            <label for="speed">Speed <output id="speed-value">1×</output></label
+            ><input
+              id="speed"
+              type="range"
+              min="0.25"
+              max="3"
+              step="0.25"
+              value="1"
+            />
+          </div>
+        </div>
+        <button id="preview-motion" class="quiet motion-preview">
+          ▶ Play from this scene
+        </button>
         <label class="field-label">Accent</label>
         <div id="colors" class="swatches"></div>
         <div class="divider"></div>
@@ -185,7 +221,7 @@
       </aside>
     </main>
     <footer>
-      <span>A diagram. A story. <strong>Aha.</strong></span
+      <span>Made for a clearer explanation.</span
       ><span>LOCAL-FIRST · OPEN SOURCE · NO SIGN-UP</span>
     </footer>
     <dialog id="diagram-dialog">
@@ -219,7 +255,7 @@
       <form method="dialog" class="dialog-heading">
         <div>
           <span class="eyebrow">READY TO SHARE</span>
-          <h2>Give your idea a voice.</h2>
+          <h2>Ready when you are.</h2>
         </div>
         <button id="export-close" class="icon-button" aria-label="Close">
           ×
