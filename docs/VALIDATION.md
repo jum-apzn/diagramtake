@@ -1,9 +1,7 @@
-# Release checks · 0.2.0
+# Release checks · 0.3.0
 
-- The clean light-theme renderer and new routed payment example were rendered and visually inspected.
-- 51 Node tests pass, including 12 connector-routing checks for separate branch ports and return lanes, obstacle avoidance, direction variants, loops, labels, and arrowheads.
-- Five motion styles produce distinct rendered pixels; changing speed changes the animation position. All use the same renderer for preview and export.
-- Core DOM editing flows still pass: scene editing, order, duplicate/delete, undo/redo, diagram updates and errors, timeline scrub, and export panel.
-- The bundled sample is a 19.5-second, 1280×720, 30 fps MP4 rendered from the shared scene data and Canvas renderer with Node/FFmpeg.
+Light, Dark, and Paper are selectable in the editor. The chosen theme survives project JSON and local autosave; older and invalid theme values fall back to Light. Undo and loading the example preserve the expected selection.
 
-Native browser WebM recording, audio synchronization, and responsive browser layout have not been end-to-end checked. The MP4 example is an engine render, not evidence of a successful browser WebM export.
+The same Canvas renderer produced all three same-scene PNGs and the 12-second Dark MP4 in `docs/themes/`. The palettes were visually reviewed for text, connector and highlight contrast. Existing 0.2 sample media is preserved.
+
+54 Node tests pass, including theme schema/fallback checks and the existing routing and export lifecycle coverage. Core DOM editing and theme-selection flows pass. Native browser WebM recording and browser layout still need end-to-end browser validation; the MP4 is an engine-rendered example.

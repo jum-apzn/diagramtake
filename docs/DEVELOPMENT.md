@@ -27,3 +27,7 @@ ffmpeg -i docs/payment-retry.mp4 \
 ## Verification scope
 
 The Node tests cover project validation, diagram parsing, camera math and mocked export lifecycle. The shipped sample has been rendered with the shared Canvas renderer and inspected as media. Native MediaRecorder recording, browser audio decoding, and full DOM interactions need real-browser validation; passing Node tests is not proof of those platform behaviors.
+
+## Theme showcase
+
+Use the same optional Canvas/FFmpeg setup with `node scripts/render-themes.mjs`. It writes three same-scene PNGs, a comparison strip, a 12-second Dark MP4, and a Dark project example. These use `project.theme` and the shared renderer without a separate export style path.

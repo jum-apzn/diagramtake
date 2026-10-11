@@ -34,6 +34,14 @@ http://localhost:5173 을 여세요. Node.js 20 이상이면 됩니다. 설치�
 - 720p WebM 영상과 PNG 이미지
 - 계정·업로드·유료 API 없이 내 기기에서 처리
 
+### 분위기를 고르세요
+
+상단 Theme에서 Light · Dark · Paper를 고를 수 있습니다. 편집기와 미리보기, PNG·영상 출력에 같은 테마가 적용되고 프로젝트에도 저장됩니다. 이전 버전 프로젝트는 Light로 열립니다.
+
+![세 테마 비교](themes/themes-comparison.png)
+
+[12초 Dark 예제](themes/dark-story.mp4)
+
 ### 알아두기
 
 도형 입력은 문서에 안내한 작은 Mermaid-style 문법만 지원하며, 전체 Mermaid 호환 도구는 아닙니다. 오디오는 프로젝트 JSON에 포함되지 않으므로 프로젝트를 다시 열면 원본 음원을 다시 추가하세요. WebM 출력 중에는 탭을 열어두세요. 예제 MP4/GIF는 같은 장면 데이터와 렌더러를 Node와 FFmpeg로 렌더한 자료이며, 앱의 MP4 출력 기능은 아닙니다.
