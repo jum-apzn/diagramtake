@@ -7,6 +7,7 @@ Run `node server.js` and open localhost:5173. There are no app dependencies. Bef
 ## Code map
 
 - `src/model.js`: constrained diagram parser, layout, project schema, story timing.
+- `src/themes.js` and `themes.css`: semantic render palettes and editor theme tokens.
 - `src/routing.js`: obstacle-aware orthogonal connectors, branch ports, return lanes, and label positions.
 - `src/render.js`: deterministic Canvas frame renderer and hit testing. Preview and exports share it.
 - `src/app.js`: scene editor, playback, audio, autosave and file actions.

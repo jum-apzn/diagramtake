@@ -1,0 +1,606 @@
+/* Editor-only theme tokens. The canvas keeps its own export-safe palette. */
+:root,
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f6f6f3;
+  --surface: #ffffff;
+  --panel: #fbfbf8;
+  --workspace: #f0f1ec;
+  --transport: #f6f7f2;
+  --field: #fcfcfa;
+  --border: #e0e3da;
+  --border-strong: #c4c9bd;
+  --text: #303731;
+  --text-secondary: #596250;
+  --muted: #626c5d;
+  --accent: #7163a9;
+  --accent-text: #6b5686;
+  --accent-soft: #f1eef7;
+  --accent-border: #c8bcdd;
+  --primary: #7466a9;
+  --primary-hover: #62548f;
+  --on-primary: #ffffff;
+  --button: #eff0eb;
+  --button-hover: #e8e9e3;
+  --quiet-hover: #f4f4ef;
+  --card-hover: #f0f1eb;
+  --badge: #eff0e9;
+  --timeline: #e9eddf;
+  --timeline-selected: #e4dded;
+  --timeline-border: #d7dccf;
+  --timeline-active-border: #b5a4ca;
+  --canvas-edge: #dce0d4;
+  --canvas-surround: #fafbf8;
+  --status: #6c8159;
+  --danger: #a4484e;
+  --danger-border: #e0bdc0;
+  --danger-hover: #f9eeef;
+  --focus: #8a73bc;
+  --selection: #e7dff5;
+  --selection-text: #342b43;
+  --backdrop: #282e2866;
+  --canvas-shadow: 0 6px 24px #485a3310;
+  --dialog-shadow: 0 20px 70px #37442520;
+  --toast-shadow: 0 5px 25px #463a5318;
+  --scrollbar: #b9bfb0;
+  --lime: var(--accent);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #191b20;
+  --surface: #22242a;
+  --panel: #1e2026;
+  --workspace: #191b20;
+  --transport: #202228;
+  --field: #282a32;
+  --border: #373a45;
+  --border-strong: #626573;
+  --text: #eeeef2;
+  --text-secondary: #c3c4ce;
+  --muted: #a5a8b5;
+  --accent: #bcabec;
+  --accent-text: #cbbbf4;
+  --accent-soft: #312c40;
+  --accent-border: #76668f;
+  --primary: #bcabec;
+  --primary-hover: #cbbcf4;
+  --on-primary: #251d36;
+  --button: #30323b;
+  --button-hover: #3d3f4a;
+  --quiet-hover: #2c2e37;
+  --card-hover: #292c34;
+  --badge: #2c2f38;
+  --timeline: #2c2f39;
+  --timeline-selected: #403550;
+  --timeline-border: #454854;
+  --timeline-active-border: #a38bc6;
+  --canvas-edge: #414450;
+  --canvas-surround: #181c22;
+  --status: #a6bda1;
+  --danger: #efa9ae;
+  --danger-border: #795056;
+  --danger-hover: #3d2c32;
+  --focus: #c9b8f7;
+  --selection: #574768;
+  --selection-text: #ffffff;
+  --backdrop: #090a0ebb;
+  --canvas-shadow: none;
+  --dialog-shadow: 0 20px 70px #00000040;
+  --toast-shadow: 0 8px 25px #00000030;
+  --scrollbar: #606473;
+}
+
+:root[data-theme="paper"] {
+  color-scheme: light;
+  --bg: #f4eee3;
+  --surface: #fffbf3;
+  --panel: #faf5eb;
+  --workspace: #f0e9dd;
+  --transport: #f8f2e7;
+  --field: #fffcf6;
+  --border: #ded4c5;
+  --border-strong: #b6a691;
+  --text: #3b332b;
+  --text-secondary: #64574a;
+  --muted: #706154;
+  --accent: #976047;
+  --accent-text: #844d36;
+  --accent-soft: #f3e7d9;
+  --accent-border: #c5a489;
+  --primary: #966047;
+  --primary-hover: #7e4d37;
+  --on-primary: #ffffff;
+  --button: #eee5d8;
+  --button-hover: #e3d7c7;
+  --quiet-hover: #f3ecdf;
+  --card-hover: #f0e8db;
+  --badge: #eee5d7;
+  --timeline: #eadfce;
+  --timeline-selected: #ecd5bf;
+  --timeline-border: #d8c7b1;
+  --timeline-active-border: #b28a67;
+  --canvas-edge: #d5c7b2;
+  --canvas-surround: #f6f0e4;
+  --status: #737653;
+  --danger: #a14742;
+  --danger-border: #d6aaa0;
+  --danger-hover: #f6e5de;
+  --focus: #9c6748;
+  --selection: #e7cfb8;
+  --selection-text: #3b2e23;
+  --backdrop: #40352877;
+  --canvas-shadow: 0 5px 20px #604c2910;
+  --dialog-shadow: 0 20px 70px #59452a26;
+  --toast-shadow: 0 5px 25px #59452a18;
+  --scrollbar: #baab96;
+}
+
+/* Shared semantic rules keep every editor surface on the same palette. */
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+::selection {
+  background: var(--selection);
+  color: var(--selection-text);
+}
+
+button {
+  background: var(--button);
+  color: var(--text);
+}
+
+button:hover {
+  background: var(--button-hover);
+}
+
+button:disabled,
+input:disabled,
+textarea:disabled,
+select:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.primary,
+.play-button {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.primary:hover,
+.play-button:hover {
+  background: var(--primary-hover);
+}
+
+.quiet {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+.quiet:hover {
+  background: var(--quiet-hover);
+  border-color: var(--border-strong);
+}
+
+.text-button {
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.text-button:hover {
+  background: transparent;
+  color: var(--accent-text);
+}
+
+.icon-button {
+  background: transparent;
+}
+
+.icon-button:hover {
+  background: var(--button-hover);
+}
+
+.danger {
+  background: transparent;
+  color: var(--danger);
+  border-color: var(--danger-border);
+}
+
+.danger:hover {
+  background: var(--danger-hover);
+  border-color: var(--danger);
+}
+
+.topbar,
+.inspector,
+footer {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+.brand,
+.card-title,
+.project-heading input {
+  color: var(--text);
+}
+
+.brand small,
+.project-heading > span,
+.eyebrow,
+.panel-intro,
+.card-time,
+.card-caption,
+.card-number,
+.local-note,
+.stage-toolbar,
+.muted,
+.stage-hint,
+.transport-left > span,
+.transport-note,
+.fps,
+.timeline-label,
+.timeline-foot,
+.field-help,
+.unit-input span,
+footer {
+  color: var(--muted);
+}
+
+.brand-mark,
+.format-icon {
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+
+.project-heading {
+  border-color: var(--border);
+}
+
+.project-heading input {
+  background: transparent;
+  border: 0;
+}
+
+.story-panel {
+  background: var(--panel);
+  border-color: var(--border);
+}
+
+.count {
+  color: var(--text-secondary);
+  background: var(--badge);
+}
+
+.scene-card {
+  background: transparent;
+}
+
+.scene-card:hover {
+  background: var(--card-hover);
+}
+
+.scene-card.active {
+  background: var(--accent-soft);
+  border-color: var(--accent-border);
+  box-shadow: none;
+}
+
+.scene-card.active .card-number {
+  color: var(--accent-text);
+}
+
+.add-scene {
+  background: transparent;
+  border-color: var(--border-strong);
+  color: var(--text-secondary);
+}
+
+.add-scene:hover {
+  background: var(--card-hover);
+  border-color: var(--accent-border);
+  color: var(--accent-text);
+}
+
+.status-dot,
+.live-dot {
+  background: var(--status);
+}
+
+.detail-dot {
+  background: var(--accent-border);
+}
+
+.center-panel {
+  background: var(--workspace);
+  background-image: none;
+}
+
+.stage-toolbar button {
+  background: transparent;
+  border-color: var(--border-strong);
+  color: var(--text-secondary);
+}
+
+.stage-toolbar button:hover {
+  background: var(--quiet-hover);
+  color: var(--text);
+}
+
+.canvas-wrap {
+  border-color: var(--canvas-edge);
+  background: var(--canvas-surround);
+  box-shadow: var(--canvas-shadow);
+}
+
+.transport,
+.timeline-region {
+  background: var(--transport);
+  border-color: var(--border);
+}
+
+.timeline-block {
+  background: var(--timeline);
+  border-color: var(--timeline-border);
+  color: var(--text-secondary);
+}
+
+.timeline-block:hover {
+  background: var(--button-hover);
+  border-color: var(--border-strong);
+}
+
+.timeline-block.active {
+  background: var(--timeline-selected);
+  border-color: var(--timeline-active-border);
+  color: var(--accent-text);
+}
+
+.timeline-block span {
+  opacity: 1;
+}
+
+input,
+textarea,
+select {
+  background: var(--field);
+  border-color: var(--border);
+  color: var(--text);
+  caret-color: var(--accent);
+  accent-color: var(--accent);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+input:not([type="range"]):hover,
+textarea:hover,
+select:hover {
+  border-color: var(--border-strong);
+}
+
+select option,
+select optgroup {
+  background: var(--field);
+  color: var(--text);
+}
+
+.field-label,
+.effect-controls label,
+dialog > p,
+.export-card p {
+  color: var(--text-secondary);
+}
+
+.effect-controls output {
+  color: var(--accent-text);
+}
+
+.effect-controls input,
+#scrubber {
+  background: transparent;
+  accent-color: var(--accent);
+}
+
+.motion-preview {
+  background: var(--accent-soft);
+  border-color: var(--accent-border);
+  color: var(--accent-text);
+}
+
+.motion-preview:hover {
+  background: var(--timeline-selected);
+  border-color: var(--timeline-active-border);
+}
+
+/* Swatch fill is an inline scene color, intentionally independent of the UI. */
+.swatch {
+  border-color: var(--surface);
+}
+
+.swatch.active {
+  outline-color: var(--text-secondary);
+}
+
+.swatch:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.divider {
+  border-color: var(--border);
+}
+
+.target-chip,
+.edge-chip {
+  background: var(--field);
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+
+.target-chip:hover,
+.edge-chip:hover {
+  background: var(--quiet-hover);
+  border-color: var(--border-strong);
+}
+
+.target-chip.active,
+.edge-chip.active {
+  background: var(--accent-soft);
+  border-color: var(--accent-border);
+  color: var(--accent-text);
+}
+
+dialog {
+  background: var(--surface);
+  border-color: var(--border-strong);
+  color: var(--text);
+  box-shadow: var(--dialog-shadow);
+}
+
+dialog::backdrop {
+  background: var(--backdrop);
+  backdrop-filter: blur(5px);
+}
+
+.export-card {
+  background: var(--panel);
+  border-color: var(--border);
+}
+
+.error {
+  color: var(--danger) !important;
+}
+
+progress {
+  accent-color: var(--accent);
+}
+
+#toast {
+  background: var(--surface);
+  border-color: var(--accent-border);
+  color: var(--text);
+  box-shadow: var(--toast-shadow);
+}
+
+.inspector,
+.edge-list,
+textarea {
+  scrollbar-color: var(--scrollbar) transparent;
+  scrollbar-width: thin;
+}
+
+/* A native select retains keyboard support and respects the active color scheme. */
+.theme-picker {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex: 0 0 auto;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.theme-picker > label,
+.theme-picker > span {
+  font-size: 10px;
+  font-weight: 500;
+}
+
+#theme-select {
+  width: auto;
+  min-width: 91px;
+  min-height: 33px;
+  padding: 7px 8px;
+  border-color: var(--border-strong);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: 11px;
+  cursor: pointer;
+}
+
+#theme-select:hover {
+  background: var(--quiet-hover);
+  border-color: var(--accent-border);
+}
+
+.header-actions {
+  align-items: center;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1150px) {
+  .theme-picker > label,
+  .theme-picker > span {
+    display: none;
+  }
+
+  #theme-select {
+    min-width: 82px;
+    font-size: 10px;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+  .topbar {
+    gap: 12px;
+  }
+
+  .project-heading {
+    padding-left: 12px;
+  }
+
+  .header-actions {
+    gap: 4px;
+  }
+
+  .header-actions button {
+    padding: 8px;
+  }
+
+  .header-actions .primary span {
+    padding-left: 6px;
+  }
+}
+
+@media (max-width: 600px) {
+  .theme-picker {
+    gap: 5px;
+  }
+
+  #theme-select {
+    min-width: 76px;
+    min-height: 30px;
+    padding: 6px;
+  }
+
+  .header-actions {
+    flex-wrap: wrap;
+    max-width: 100%;
+  }
+
+  .topbar > .theme-picker {
+    margin-left: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  button,
+  #toast {
+    transition: none;
+  }
+}

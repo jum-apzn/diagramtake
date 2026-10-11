@@ -10,6 +10,7 @@
     />
     <title>DiagramTake — A diagram. A story.</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="themes.css" />
   </head>
   <body>
     <header class="topbar">
@@ -25,6 +26,14 @@
         /><span id="save-status">● Saved locally</span>
       </div>
       <div class="header-actions">
+        <div class="theme-picker">
+          <label for="theme-select">Theme</label
+          ><select id="theme-select" aria-label="Story and editor theme">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="paper">Paper</option>
+          </select>
+        </div>
         <button
           id="undo"
           class="quiet"

@@ -43,6 +43,7 @@ Add an audio file if you already have a voice-over. It plays from the start of t
 
 - **Sentence-first direction:** editable cards, duplication, reorder, deletion, undo/redo.
 - **Moving explanations:** clean routed connections, per-scene highlights, smooth focus-camera transitions.
+- **Three clean themes:** Light, Dark, and Paper. Pick one in the header; it travels with your project and every PNG/video export.
 - **Five motion styles:** draw-on paths, flowing dots, soft pulses, fade-and-slide entrances, or camera focus. Tune speed and intensity per scene.
 - **Clean connectors:** distinct ports, separate return lanes, and node-aware orthogonal routes keep branching explanations readable.
 - **A real timeline:** play, pause, scrub, jump between scenes, edit durations.
@@ -51,6 +52,14 @@ Add an audio file if you already have a voice-over. It plays from the start of t
 - **A quiet network:** no analytics, third-party fonts, remote rendering, uploads, or paid services.
 
 Space plays/pauses. Left/right arrows switch scenes. Ctrl/⌘ Z undoes; Ctrl/⌘ Shift Z redoes (outside text inputs).
+
+## Set the mood, keep the clarity
+
+![The same scene in Light, Dark, and Paper](docs/themes/themes-comparison.png)
+
+Use the **Theme** selector in the header. Light keeps the canvas airy; Dark uses restrained slate tones; Paper gives the story a warmer backdrop. The editor and exported frames follow the same selection. Older projects open in Light.
+
+[Watch the 12-second Dark example](docs/themes/dark-story.mp4) · [Open its project](examples/dark-theme.json)
 
 ## Bring your own flow
 
