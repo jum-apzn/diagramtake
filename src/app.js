@@ -244,6 +244,12 @@ function renderInspector() {
   $("#narration").value = s.narration;
   $("#duration").value = s.duration;
   $("#camera").value = s.camera;
+  $("#effect").value = s.effect || "flow";
+  $("#intensity").value = s.intensity ?? 0.7;
+  $("#speed").value = s.speed ?? 1;
+  $("#intensity-value").textContent =
+    Math.round((s.intensity ?? 0.7) * 100) + "%";
+  $("#speed-value").textContent = (s.speed ?? 1) + "×";
   $("#colors").replaceChildren();
   Object.entries(COLORS).forEach(([key, color]) => {
     const b = text("button", "swatch" + (s.color === key ? " active" : ""), "");
@@ -308,6 +314,22 @@ $("#duration").addEventListener("change", (e) => {
     { inspector: true },
   );
 });
+$("#preview-motion").onclick = () => {
+  selectScene(selected);
+  play();
+};
+$("#effect").onchange = (e) =>
+  change((s) => (s.effect = e.target.value), { inspector: true });
+$("#intensity").oninput = (e) => {
+  const value = Number(e.target.value);
+  change((s) => (s.intensity = value));
+  $("#intensity-value").textContent = Math.round(value * 100) + "%";
+};
+$("#speed").oninput = (e) => {
+  const value = Number(e.target.value);
+  change((s) => (s.speed = value));
+  $("#speed-value").textContent = value + "×";
+};
 $("#camera").onchange = (e) => change((s) => (s.camera = e.target.value));
 $("#clear-targets").onclick = () =>
   change(

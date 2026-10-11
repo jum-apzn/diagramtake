@@ -1,8 +1,8 @@
 export const COLORS = {
-  lime: "#c6fa76",
-  violet: "#ae9bff",
-  rose: "#ff8f9c",
-  blue: "#87cbff",
+  lime: "#3e8f69",
+  violet: "#7665b5",
+  rose: "#c66e70",
+  blue: "#4d82b9",
 };
 export const sampleSource = `flowchart LR
   user[고객 · Client] -->|결제 요청| api[결제 API]
@@ -114,6 +114,9 @@ export function makeScene(part = {}) {
     nodes: [],
     edges: [],
     camera: "wide",
+    effect: "flow",
+    intensity: 0.7,
+    speed: 1,
     ...part,
   };
 }
@@ -125,6 +128,7 @@ export function demoProject() {
     scenes: [
       makeScene({
         title: "한 번의 클릭",
+        effect: "draw",
         narration: "고객이 결제 버튼을 누르면, 요청이 결제 API로 전달됩니다.",
         duration: 4,
         nodes: ["user", "api"],
@@ -132,6 +136,7 @@ export function demoProject() {
       }),
       makeScene({
         title: "승인을 기다리는 순간",
+        effect: "flow",
         narration: "결제 API가 카드사에 승인을 요청합니다.",
         duration: 3.5,
         nodes: ["api", "bank"],
@@ -141,6 +146,7 @@ export function demoProject() {
       }),
       makeScene({
         title: "실패는 끝이 아니다",
+        effect: "pulse",
         narration:
           "일시적 오류가 발생해도 요청을 잃지 않습니다. 재시도 큐에 보관하죠.",
         duration: 4.5,
@@ -151,6 +157,8 @@ export function demoProject() {
       }),
       makeScene({
         title: "다시, 안전하게",
+        effect: "flow",
+        speed: 1.4,
         narration: "잠시 후 큐가 카드사로 요청을 다시 전달합니다.",
         duration: 3.5,
         nodes: ["retry", "bank"],
@@ -160,6 +168,7 @@ export function demoProject() {
       }),
       makeScene({
         title: "그리고 결제 완료",
+        effect: "fade",
         narration:
           "승인이 돌아오면 결제가 완료됩니다. 실패를 견디는 흐름입니다.",
         duration: 4,
@@ -225,6 +234,15 @@ export function validateProject(input) {
       edges: [...new Set(s.edges)],
       color: COLORS[s.color] ? s.color : "lime",
       camera: s.camera === "focus" ? "focus" : "wide",
+      effect: ["flow", "draw", "pulse", "fade", "focus"].includes(s.effect)
+        ? s.effect
+        : "flow",
+      intensity: Number.isFinite(s.intensity)
+        ? Math.max(0.2, Math.min(1.5, s.intensity))
+        : 0.7,
+      speed: Number.isFinite(s.speed)
+        ? Math.max(0.25, Math.min(3, s.speed))
+        : 1,
     });
   });
   return { version: 1, title: input.title, source: input.source, scenes };
