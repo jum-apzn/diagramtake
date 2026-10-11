@@ -136,3 +136,27 @@ test("curve interpolation endpoints are exact", () => {
   assert.deepEqual(pointOnCurve(p, 1), p[3]);
   assert.equal(makeScene().duration, 3);
 });
+
+test("old projects gain safe motion defaults and new effects roundtrip", () => {
+  const p = demoProject();
+  delete p.scenes[0].effect;
+  delete p.scenes[0].speed;
+  delete p.scenes[0].intensity;
+  const old = validateProject(p);
+  assert.equal(old.scenes[0].effect, "flow");
+  assert.equal(old.scenes[0].speed, 1);
+  p.scenes[1].effect = "pulse";
+  p.scenes[1].speed = 2;
+  p.scenes[1].intensity = 1.2;
+  const next = validateProject(p);
+  assert.equal(next.scenes[1].effect, "pulse");
+  assert.equal(next.scenes[1].speed, 2);
+  assert.equal(next.scenes[1].intensity, 1.2);
+  p.scenes[2].speed = 999;
+  p.scenes[2].intensity = -4;
+  p.scenes[2].effect = "unknown";
+  const clamped = validateProject(p);
+  assert.equal(clamped.scenes[2].speed, 3);
+  assert.equal(clamped.scenes[2].intensity, 0.2);
+  assert.equal(clamped.scenes[2].effect, "flow");
+});
