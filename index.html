@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#14171b" />
+    <meta
+      name="description"
+      content="Turn a diagram into a visual story. Pick a sentence, highlight a path, export a video. Local-first and open source."
+    />
+    <title>DiagramTake — A diagram. A story.</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="DiagramTake home"
+        ><span class="brand-mark">d<span>↗</span></span
+        ><span>DiagramTake<small>STORY STUDIO</small></span></a
+      >
+      <div class="project-heading">
+        <input
+          id="project-title"
+          aria-label="Project title"
+          maxlength="160"
+        /><span id="save-status">● Saved locally</span>
+      </div>
+      <div class="header-actions">
+        <button
+          id="undo"
+          class="quiet"
+          aria-label="Undo"
+          title="Undo (Ctrl/⌘ Z)"
+        >
+          ↶</button
+        ><button
+          id="redo"
+          class="quiet"
+          aria-label="Redo"
+          title="Redo (Ctrl/⌘ Shift Z)"
+        >
+          ↷</button
+        ><button id="open-project" class="quiet">Open</button
+        ><button id="save-project" class="quiet">Save .json</button
+        ><button id="export-open" class="primary">Export <span>↗</span></button>
+      </div>
+    </header>
+    <main class="workspace">
+      <aside class="story-panel">
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">01 / THE SCRIPT</span>
+            <h1>장면으로 이야기하기</h1>
+          </div>
+          <span class="count" id="scene-count">05</span>
+        </div>
+        <p class="panel-intro">
+          한 문장에 하나의 움직임.<br />장면을 고르고, 흐름을 밝혀 주세요.
+        </p>
+        <div id="scene-list" class="scene-list"></div>
+        <button id="add-scene" class="add-scene">＋ Add a scene</button>
+        <div class="local-note">
+          <span class="status-dot"></span> Your story stays on this device.
+        </div>
+      </aside>
+      <section class="center-panel">
+        <div class="stage-toolbar">
+          <div>
+            <span class="live-dot"></span> LIVE PREVIEW
+            <span class="muted">/ 1280 × 720</span>
+          </div>
+          <button id="diagram-open" class="quiet">〈 〉 Edit diagram</button>
+        </div>
+        <div class="stage-area">
+          <div class="canvas-wrap">
+            <canvas
+              id="stage"
+              width="1280"
+              height="720"
+              aria-label="Diagram preview. Click nodes to highlight them for the selected scene."
+            ></canvas>
+          </div>
+          <div class="stage-hint">
+            <span>✦ Click a node to make it part of this scene</span
+            ><button id="reset-demo" class="text-button">Load example ↗</button>
+          </div>
+        </div>
+        <div class="transport">
+          <div class="transport-left">
+            <button
+              id="restart"
+              class="icon-button"
+              aria-label="Restart playback"
+            >
+              ↤</button
+            ><button id="play" class="play-button" aria-label="Play story">
+              ▶</button
+            ><span id="time-label">00:00 / 00:20</span>
+          </div>
+          <span class="transport-note"
+            >SPACE to play · ← → to change scenes</span
+          ><span class="fps">30 FPS</span>
+        </div>
+        <div class="timeline-region">
+          <div class="timeline-label">
+            <span>STORY TIMELINE</span><span id="total-label"></span>
+          </div>
+          <div id="timeline" class="timeline"></div>
+          <input
+            id="scrubber"
+            type="range"
+            min="0"
+            max="20"
+            value="0"
+            step="0.01"
+            aria-label="Scrub story time"
+          />
+          <div class="timeline-foot">
+            <span id="audio-label"
+              >♫ Add your voice. Let the diagram do the explaining.</span
+            ><button id="audio-open" class="text-button">Add audio ↗</button
+            ><button id="audio-remove" class="text-button" hidden>
+              Remove
+            </button>
+          </div>
+        </div>
+      </section>
+      <aside class="inspector">
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">02 / THE DIRECTION</span>
+            <h2>장면 설정</h2>
+          </div>
+          <span class="spark">✳</span>
+        </div>
+        <label class="field-label" for="scene-title">Scene title</label
+        ><input id="scene-title" maxlength="160" /><label
+          class="field-label"
+          for="narration"
+          >Narration / Caption</label
+        ><textarea id="narration" rows="5" maxlength="2000"></textarea>
+        <p class="field-help">
+          영상에 표시할 문장입니다. 음성은 아래에서 직접 추가할 수 있어요.
+        </p>
+        <div class="split-fields">
+          <div>
+            <label class="field-label" for="duration">Duration</label>
+            <div class="unit-input">
+              <input
+                id="duration"
+                type="number"
+                min="0.5"
+                max="60"
+                step="0.5"
+              /><span>sec</span>
+            </div>
+          </div>
+          <div>
+            <label class="field-label" for="camera">Camera</label
+            ><select id="camera">
+              <option value="wide">Wide shot</option>
+              <option value="focus">Follow focus</option>
+            </select>
+          </div>
+        </div>
+        <label class="field-label">Accent</label>
+        <div id="colors" class="swatches"></div>
+        <div class="divider"></div>
+        <div class="targets-header">
+          <label class="field-label">Highlight nodes</label
+          ><button id="clear-targets" class="text-button">Clear</button>
+        </div>
+        <div id="node-targets" class="target-list"></div>
+        <label class="field-label">Animate connections</label>
+        <div id="edge-targets" class="edge-list"></div>
+        <div class="inspector-bottom">
+          <button id="move-up" class="quiet" aria-label="Move scene earlier">
+            ↑</button
+          ><button id="move-down" class="quiet" aria-label="Move scene later">
+            ↓</button
+          ><button id="duplicate" class="quiet">Duplicate</button
+          ><button id="delete-scene" class="danger" aria-label="Delete scene">
+            ×
+          </button>
+        </div>
+      </aside>
+    </main>
+    <footer>
+      <span>A diagram. A story. <strong>Aha.</strong></span
+      ><span>LOCAL-FIRST · OPEN SOURCE · NO SIGN-UP</span>
+    </footer>
+    <dialog id="diagram-dialog">
+      <form method="dialog" class="dialog-heading">
+        <div>
+          <span class="eyebrow">THE BIG PICTURE</span>
+          <h2>Start with a flow.</h2>
+        </div>
+        <button class="icon-button" aria-label="Close">×</button>
+      </form>
+      <p>
+        Mermaid-style flowchart syntax. Nodes and arrows, without the setup.
+      </p>
+      <textarea
+        id="diagram-source"
+        rows="12"
+        spellcheck="false"
+        aria-label="Diagram source"
+      ></textarea>
+      <p class="field-help">
+        Supports flowchart LR / TD, node[label], node(label), node{label}, →
+        written as --&gt;, and --&gt;|label|. Up to 24 nodes. Other Mermaid
+        syntax is not supported.
+      </p>
+      <p id="diagram-error" class="error" role="alert"></p>
+      <div class="dialog-actions">
+        <button id="apply-diagram" class="primary">Apply diagram ↗</button>
+      </div>
+    </dialog>
+    <dialog id="export-dialog">
+      <form method="dialog" class="dialog-heading">
+        <div>
+          <span class="eyebrow">READY TO SHARE</span>
+          <h2>Give your idea a voice.</h2>
+        </div>
+        <button id="export-close" class="icon-button" aria-label="Close">
+          ×
+        </button>
+      </form>
+      <p>
+        Export a real video or a clean frame. Everything is rendered here, on
+        your device.
+      </p>
+      <div class="export-card">
+        <span class="format-icon">▶</span>
+        <div>
+          <strong>WebM video</strong>
+          <p>720p · 30 fps · audio included when added</p>
+        </div>
+        <button id="export-video" class="primary">Export video</button>
+      </div>
+      <div class="export-card">
+        <span class="format-icon">▧</span>
+        <div>
+          <strong>PNG frame</strong>
+          <p>1280 × 720 · current playhead</p>
+        </div>
+        <button id="export-png" class="quiet">Save frame</button>
+      </div>
+      <progress id="export-progress" max="1" value="0" hidden></progress>
+      <p id="export-status" role="status">
+        Video export takes the length of your story. Keep this tab visible.
+      </p>
+      <button id="export-cancel" class="danger" hidden>Cancel export</button>
+    </dialog>
+    <input
+      id="project-file"
+      type="file"
+      accept="application/json,.json"
+      hidden
+    /><input id="audio-file" type="file" accept="audio/*,.wav" hidden />
+    <div id="toast" role="status"></div>
+    <script type="module" src="src/app.js"></script>
+  </body>
+</html>

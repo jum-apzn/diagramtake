@@ -1,0 +1,14 @@
+{
+  "name": "diagramtake",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Turn diagrams into narrated visual stories. Local-first, dependency-free.",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "test": "node --test tests/*.test.js",
+    "check": "node --check src/app.js && node --check src/model.js && node --check src/render.js && node --check src/export.js"
+  },
+  "license": "MIT"
+}
