@@ -1,3 +1,6 @@
+import { GIF_PRESETS } from "./gif-quality.js";
+import { exportGIF } from "./gif-export.js";
+import { mountQuickStart } from "./quick-start.js";
 import { getTheme, normalizeTheme } from "./themes.js";
 import {
   demoProject,
@@ -13,6 +16,7 @@ import { exportPNG, exportWebM, downloadBlob } from "./export.js";
 const $ = (s) => document.querySelector(s),
   canvas = $("#stage"),
   storageKey = "diagramtake.project.v1";
+let guide, hasSavedProject = false;
 let project = demoProject(),
   selected = 0,
   time = 0,
@@ -29,7 +33,10 @@ let project = demoProject(),
   exportController = null;
 try {
   const saved = localStorage.getItem(storageKey);
-  if (saved) project = validateProject(JSON.parse(saved));
+  if (saved) {
+    project = validateProject(JSON.parse(saved));
+    hasSavedProject = true;
+  }
 } catch {}
 graph = layoutDiagram(parseDiagram(project.source));
 const undoStack = [],
@@ -165,6 +172,7 @@ function play() {
   }
   if (time >= totalDuration(project)) time = 0;
   playing = true;
+  guide?.complete(3);
   lastTick = performance.now();
   startAudio();
   draw();
@@ -537,13 +545,14 @@ $("#project-file").onchange = async (e) => {
     toast(error.message);
   }
 };
-$("#reset-demo").onclick = () => {
+function loadExample() {
+  if (exportController) return false;
   if (
     !confirm(
-      "현재 이야기를 예제로 바꿀까요? 필요한 경우 먼저 Save .json으로 저장해 주세요.",
+      "현재 이야기를 예제로 바꿀까요? 먼저 Save .json으로 저장하면 작업을 보관할 수 있어요. 추가한 오디오는 제거되며 다시 추가해야 합니다.",
     )
   )
-    return;
+    return false;
   pause();
   checkpoint(true);
   const selectedTheme = normalizeTheme(project.theme);
@@ -555,7 +564,9 @@ $("#reset-demo").onclick = () => {
   removeAudio();
   save();
   renderUI();
-};
+  return true;
+}
+$("#reset-demo").onclick = loadExample;
 function removeAudio() {
   stopAudio();
   audioBuffer = null;
@@ -619,6 +630,7 @@ $("#export-video").onclick = async () => {
   exportController = new AbortController();
   $("#export-video").disabled = true;
   $("#export-png").disabled = true;
+  $("#export-gif").disabled = true;
   $("#export-close").disabled = true;
   $("#export-cancel").hidden = false;
   $("#export-progress").hidden = false;
@@ -653,7 +665,48 @@ $("#export-video").onclick = async () => {
     exportController = null;
     $("#export-video").disabled = false;
     $("#export-png").disabled = false;
+    $("#export-gif").disabled = false;
     $("#export-close").disabled = false;
+    $("#export-cancel").hidden = true;
+    draw();
+  }
+};
+$("#export-gif").onclick = async () => {
+  if (exportController) return;
+  pause();
+  const snapshot = structuredClone(project);
+  const exportGraph = layoutDiagram(parseDiagram(snapshot.source));
+  const exportCanvas = document.createElement("canvas");
+  const outputCanvas = document.createElement("canvas");
+  const quality = $("#gif-quality").value;
+  const preset = GIF_PRESETS[quality];
+  exportController = new AbortController();
+  for (const id of ["#export-video", "#export-png", "#export-gif", "#export-close", "#gif-quality"]) $(id).disabled = true;
+  $("#export-cancel").hidden = false;
+  $("#export-progress").hidden = false;
+  $("#export-progress").value = 0;
+  try {
+    const blob = await exportGIF({
+      canvas: exportCanvas,
+      outputCanvas,
+      duration: totalDuration(snapshot),
+      theme: snapshot.theme,
+      quality,
+      renderFrame: (t) => renderFrame(exportCanvas, snapshot, exportGraph, t),
+      signal: exportController.signal,
+      onProgress: (p) => {
+        $("#export-progress").value = p;
+        $("#export-status").textContent = `Creating GIF ${Math.round(p * 100)}% · ${preset.width} × ${preset.height} · ${preset.fps} fps · no audio`;
+      },
+    });
+    downloadBlob(blob, "diagramtake-story.gif");
+    $("#export-status").textContent = `GIF saved · ${(blob.size / 1024 / 1024).toFixed(1)} MB · loops · no audio`;
+    toast("GIF saved. 움직이는 이미지로 저장했어요.");
+  } catch (error) {
+    $("#export-status").textContent = error.name === "AbortError" ? "GIF export cancelled. You can try again." : error.message;
+  } finally {
+    exportController = null;
+    for (const id of ["#export-video", "#export-png", "#export-gif", "#export-close", "#gif-quality"]) $(id).disabled = false;
     $("#export-cancel").hidden = true;
     draw();
   }
@@ -673,3 +726,10 @@ document.addEventListener("visibilitychange", () => {
   if (document.hidden && playing) pause();
 });
 renderUI();
+
+guide = mountQuickStart({
+  hasSavedProject,
+  loadExample,
+  previewScene: () => { selectScene(selected); play(); },
+  canInteract: () => !exportController,
+});
